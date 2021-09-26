@@ -1,4 +1,4 @@
-<?php include "control/results.php"; ?>
+<?php include "task_1_result/result_1.php"; ?>
 
 <!DOCTYPE html>
 <html>
