@@ -6,7 +6,7 @@ $validateradio="";
 $validatecheckbox="";
 $validateemail="";
 $validatepassword="";
-$v1=$v2=$v3="";
+$l1=$l2=$l3="";
 $name=$name=$age=$Designation=$email=$password="";
 if($_SERVER["REQUEST_METHOD"]=="POST")
 {
