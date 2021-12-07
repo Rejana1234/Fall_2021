@@ -1,50 +1,83 @@
-<!DOCTYPE html>
-<html>
-<head>
- 
-    
-    <title >Update Employee</title>
-    
-</head>
-<body>
 <?php
-    require('db.php');
-    
-    if (isset($_REQUEST['username'])) {
-        
-        $ID = stripslashes($_REQUEST['ID']);
-        $ID  = mysqli_real_escape_string($con, $ID);
-        $Name   = stripslashes($_REQUEST['Name']);
-        $Name    = mysqli_real_escape_string($con, $Name);
-        $Department = stripslashes($_REQUEST['Department']);
-        $Department= mysqli_real_escape_string($con, $Department);
-        $JoiningDate = date("Y-m-d H:i:s");
-        $query    = "UPDATE into `employee` (ID, Name, Department, JoiningDate)
-                     VALUES ('" . md5($ID) . "', '$Name', '$Department', '$JoiningDate')";
-        $result   = mysqli_query($con, $query);
-        if ($result) {
-            echo "<form>
-                  <h3>You Update successfully.</h3><br/>
-                  <p >Click here to <a href='search.php'>Search</a></p>
-                  </form>";
-        } else {
-            echo "<form>
-                  <h3>Required fields are missing.</h3><br/>
-                  <p>Click here to <a href='update.php'>employee_update</a> again.</p>
-                  </form>";
-        }
-    } else {
+include('db.php');
+$Name='';
+$Department='';
+$JoiningDate='';
+$Salary='';
+$id='';
+if(isset($_POST['search'])){
+    $id=$_POST['yourid'];
+    $stmt = "SELECT * FROM `employee` WHERE `ID`= '$ID' ";
+    $sel=mysqli_query($con,$stmt);
+    if($row1 = mysqli_fetch_assoc($sel)){
+     $Name=$row1['Name'];
+     $Department=$row1['Department']; 
+     $JoiningDate=$row1['JoiningDate']; 
+     $Salary=$row1['Salary'];
+  }
+}
+
+if(isset($_POST['update']))
+{
+    $ID=$_POST['ID'];
+    $Name=$_POST['name'];
+    $Department=$_POST['department'];
+    $JoiningDate=$_POST['date'];
+    $Salary=$_POST['salary'];
+    $stmt1 = " UPDATE `employee` SET `Name`='$Name',`Department`='$Department',`JoiningDate`='$JoiningDate',`Salary`='$Salary' WHERE `ID` ='$ID' ";
+    $update_q=mysqli_query($con,$stmt1);
+
+    if($update_q){
+       echo "Updated record!";
+      }
+    else{
+        echo "Please search your id first with correct value!!!";
+      }
+}
+
 ?>
-    <form action="" method="post">
-        <h1>Update</h1>
-        <input type="number" class="update-input" name="ID" placeholder="ID" required /><br><br>
-        <input type="text" class="update-input" name="Name" placeholder="Name"><br><br>
-        <input type="text" class="update-input" name="Department" placeholder="Department"><br><br>
-        <input type="Update" name="update" value="Update" class="Update-button"><br>
-        <p><a href="update.php">Click to Update</a></p>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTLabExam</title>
+
+</head>
+<body >
+ <h1>Update employee</h1>
+    <form method="post" action="index.php" id="form1">
+             <p>Search by ID:</p>  
+             <p>               
+               <input type="text" id="yourid" name="yourid"  placeholder="ID" >
+             </p>
+            <input type="submit" id="search" name="search" value="Search" >
+
     </form>
-<?phpin
-    }
-?>
-</body>
+
+  <form method="post" action="index.php" id="form2">   
+        <p>Name:</p>  
+             <p>               
+               <input type="text" id="name" name="name"  placeholder="Name" value="<?php echo $Name;?>">
+             </p>
+             <p>Department:</p>  
+             <p>               
+               <input type="text" id="department" name="Department"  placeholder="Department" value="<?php echo $Department;?>" >
+             </p>              
+            <p>Joining Date:</p>  
+             <p>      
+
+               <input type="text" id="date" name="Date"   value="<?php echo $JoiningDate;?>">
+             </p> 
+            <p>Salary:</p>  
+             <p>               
+               <input type="text" id="salary" name="Salary"  placeholder="Salary" value="<?php echo $Salary;?>">
+             </p> 
+            <input type="submit" id="update" name="update" value="Update" >
+            <input type="hidden" name="ID" value="<?php echo $ID;?>">
+        </form>
+
+    </body>
 </html>
